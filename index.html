@@ -411,7 +411,7 @@
                             <span class="text-sm font-black text-slate-300 italic">RANK #${idx+1}</span>
                         </div>
                         <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">${themeName}</p>
-                        <p class="text-lg font-black text-slate-800 leading-tight line-clamp-2">${stats[lvl].find(i => i.__theme.theme === themeName)[c.isu]}</p>
+                        <p class="text-lg font-black text-slate-800 leading-tight whitespace-normal break-words">${stats[lvl].find(i => i.__theme.theme === themeName)[c.isu]}</p>
                         <div class="mt-5 flex justify-between items-center text-xs font-bold">
                             <span class="text-slate-400 uppercase tracking-tighter">Kekerapan: <span class="text-indigo-600 font-black">${pct}%</span></span>
                             <span class="text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg">${count} Kes</span>
@@ -514,7 +514,7 @@
                 <td class="px-12 py-8"><span class="text-xs font-black uppercase px-4 py-2 rounded-xl bg-slate-900 text-white">${item.__theme.detectedLevel}</span></td>
                 <td class="px-8 py-8 font-black text-slate-800 tracking-tight text-lg">${item[c.sekolah] || item[c.ppd] || "ARAS PUSAT"}</td>
                 <td class="px-8 py-8 text-xs font-black uppercase tracking-tighter" style="color: ${item.__theme.color}">${item.__theme.theme}</td>
-                <td class="px-8 py-8 text-slate-500 font-medium line-clamp-2 italic leading-relaxed text-sm">${item[c.isu]}</td>
+                <td class="px-8 py-8 text-slate-500 font-medium whitespace-normal italic leading-relaxed text-sm break-words">${item[c.isu]}</td>
                 <td class="px-12 py-8 text-right"><button class="bg-indigo-600 text-white px-6 py-3 rounded-2xl text-xs font-black opacity-0 group-hover:opacity-100 shadow-xl transition-all">SALIN</button></td>
               `;
               tr.onclick = () => {
