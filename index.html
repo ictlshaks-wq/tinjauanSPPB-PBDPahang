@@ -6,7 +6,7 @@
   <title>JPN PAHANG | Matriks Isu SPPB MOEIS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Menambah pemalam datalabels untuk paparan jumlah & peratus pada graf -->
+  <!-- Pemalam datalabels untuk paparan statistik pada graf -->
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -34,6 +34,7 @@
   <div id="loader" class="fixed top-0 left-0 h-1.5 bg-indigo-500 transition-all duration-700 z-50 w-0 shadow-[0_0_20px_rgba(99,102,241,0.8)]"></div>
 
   <div class="min-h-screen flex flex-col">
+    <!-- Header Eksekutif -->
     <header class="glass-nav text-white sticky top-0 z-40 px-6 lg:px-10 py-6 border-b border-white/10">
       <div class="max-w-[1800px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         <div class="flex items-center gap-6">
@@ -66,11 +67,12 @@
     </header>
 
     <main class="max-w-[1800px] mx-auto w-full p-6 md:p-12 space-y-12 md:space-y-16">
+      <!-- Section 1: KPI & Aras Utama -->
       <section>
         <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-6">
             <div class="max-w-4xl">
                 <h2 class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight uppercase font-oswald leading-tight">Tinjauan Isu Perekodan dan Pelaporan PBD dalam SPPB</h2>
-                <p class="text-slate-500 text-sm md:text-lg font-bold uppercase tracking-widest mt-4">Dapatan Utama Berdasarkan 540+ Respon Semasa</p>
+                <p class="text-slate-500 text-sm md:text-lg font-bold uppercase tracking-widest mt-4">Analisis Berasaskan 570+ Respon (Status Semasa)</p>
             </div>
             <div class="bg-white px-8 md:px-12 py-6 md:py-8 rounded-[2rem] md:rounded-[3rem] border border-slate-200 shadow-sm text-center min-w-[200px] md:min-w-[280px]">
                 <p class="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">Total Aduan Diproses</p>
@@ -79,7 +81,7 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
-          <!-- ARAS: JPN -->
+          <!-- JPN Card -->
           <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 shadow-sm executive-card flex flex-col border-t-[12px] md:border-t-[16px] border-amber-500">
             <div class="flex items-center justify-between mb-10 md:mb-14">
               <span class="bg-amber-100 text-amber-700 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest">Aras: JPN</span>
@@ -90,15 +92,11 @@
             </div>
             <h3 class="text-[10px] font-black text-slate-400 uppercase mb-8 tracking-[0.2em] border-b-2 pb-3 border-slate-50">3 Masalah Utama (JPN)</h3>
             <div class="flex-1 space-y-6" id="listJPN">
-                <div class="py-12 text-center animate-pulse text-slate-200 font-bold uppercase tracking-widest text-xs">Menunggu Data...</div>
-            </div>
-            <div class="mt-10 pt-8 border-t-2 border-slate-50">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-3">Saranan:</p>
-                <p id="impactJPN" class="text-sm md:text-base font-bold text-slate-700 leading-relaxed italic">Bersihkan data asal sebelum dibekalkan ke negeri.</p>
+                <div class="py-12 text-center animate-pulse text-slate-200 font-bold uppercase tracking-widest text-xs">Memuatkan...</div>
             </div>
           </div>
 
-          <!-- ARAS: PPD -->
+          <!-- PPD Card -->
           <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 shadow-sm executive-card flex flex-col border-t-[12px] md:border-t-[16px] border-purple-600">
             <div class="flex items-center justify-between mb-10 md:mb-14">
               <span class="bg-purple-100 text-purple-700 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest">Aras: PPD</span>
@@ -109,15 +107,11 @@
             </div>
             <h3 class="text-[10px] font-black text-slate-400 uppercase mb-8 tracking-[0.2em] border-b-2 pb-3 border-slate-50">3 Masalah Utama (PPD)</h3>
             <div class="flex-1 space-y-6" id="listPPD">
-                <div class="py-12 text-center animate-pulse text-slate-200 font-bold uppercase tracking-widest text-xs">Menunggu Data...</div>
-            </div>
-            <div class="mt-10 pt-8 border-t-2 border-slate-50">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-3">Saranan:</p>
-                <p id="impactPPD" class="text-sm md:text-base font-bold text-slate-700 leading-relaxed italic">Hentikan sementara pertukaran murid masa fasa perekodan.</p>
+                <div class="py-12 text-center animate-pulse text-slate-200 font-bold uppercase tracking-widest text-xs">Memuatkan...</div>
             </div>
           </div>
 
-          <!-- ARAS: SEKOLAH -->
+          <!-- SEKOLAH Card -->
           <div class="bg-slate-900 rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 shadow-2xl shadow-slate-300 executive-card flex flex-col text-white border-t-[12px] md:border-t-[16px] border-indigo-500">
             <div class="flex items-center justify-between mb-10 md:mb-14">
               <span class="bg-white/10 text-indigo-300 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-white/5">Aras: SEKOLAH</span>
@@ -128,17 +122,15 @@
             </div>
             <h3 class="text-[10px] font-black text-indigo-300 uppercase mb-8 tracking-[0.2em] border-b-2 border-white/5 pb-3">5 Masalah Utama (Sekolah)</h3>
             <div class="flex-1 space-y-6 custom-scroll overflow-y-auto max-h-[500px] pr-4" id="listGuru">
-                <div class="py-12 text-center animate-pulse text-slate-600 font-bold uppercase tracking-widest text-xs">Menunggu Data...</div>
-            </div>
-            <div class="mt-10 pt-8 border-t-2 border-white/5">
-                <p class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-3">Saranan:</p>
-                <p id="impactGuru" class="text-sm md:text-base font-bold text-slate-300 leading-relaxed italic text-white/90">Tingkatkan kapasiti pelayan semasa waktu puncak.</p>
+                <div class="py-12 text-center animate-pulse text-slate-600 font-bold uppercase tracking-widest text-xs">Memuatkan...</div>
             </div>
           </div>
         </div>
       </section>
 
+      <!-- Section 2: Graf & Explorer -->
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-10 md:gap-14">
+        <!-- Sidebar Filters -->
         <aside class="lg:col-span-1 space-y-8 md:space-y-10">
           <div class="bg-white rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-12 border border-slate-200 shadow-sm">
             <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center justify-between">
@@ -163,26 +155,27 @@
 
           <div class="bg-indigo-700 rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-12 text-white shadow-xl shadow-indigo-200 relative overflow-hidden">
             <h4 class="text-indigo-200 text-[10px] font-black uppercase tracking-widest mb-6">Executive Insight</h4>
-            <div id="aiSummary" class="text-base md:text-lg leading-relaxed font-bold italic z-10 relative">
-                Sistem sedang memproses data...
-            </div>
+            <div id="aiSummary" class="text-base md:text-lg leading-relaxed font-bold italic z-10 relative">Memproses data...</div>
             <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white/5 rounded-full"></div>
           </div>
         </aside>
 
+        <!-- Main Content (Graph & Table) -->
         <div class="lg:col-span-3 space-y-10 md:space-y-12">
+            <!-- Graf Bar Statistik -->
             <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 border border-slate-200 shadow-sm relative overflow-hidden">
-                <div class="flex items-center justify-between mb-10 md:mb-12">
-                    <h4 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight">Pecahan Isu: Jumlah & Peratusan</h4>
-                    <span class="text-[10px] font-black bg-slate-100 text-slate-400 px-5 py-2 rounded-full uppercase tracking-widest border border-slate-200">Statistik Isu</span>
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 md:mb-12 gap-4">
+                    <h4 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight">Analisis Kekerapan: Jumlah & Peratusan</h4>
+                    <span class="text-[10px] font-black bg-slate-100 text-slate-400 px-5 py-2 rounded-full uppercase tracking-widest border border-slate-200 w-fit">Statistik Isu Keseluruhan</span>
                 </div>
                 <div class="h-[400px] md:h-[500px] w-full">
                     <canvas id="temaChart"></canvas>
                 </div>
             </div>
 
+            <!-- Table Logs -->
             <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] border border-slate-200 overflow-hidden shadow-sm">
-                <div class="px-8 md:px-12 py-8 md:py-10 border-b-2 border-slate-50 bg-slate-50/40 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="px-8 md:px-12 py-8 md:py-10 border-b-2 border-slate-50 bg-slate-50/40 flex justify-between items-center">
                     <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Log Laporan Aduan Terkini</h4>
                     <span id="rowCount" class="text-[10px] font-bold text-white bg-slate-900 px-5 py-2 rounded-full shadow-lg">0 Rekod Diproses</span>
                 </div>
@@ -206,11 +199,12 @@
         </div>
       </div>
 
+      <!-- Section 3: Demografi -->
       <section class="bg-slate-900 rounded-[2.5rem] md:rounded-[4rem] p-10 md:p-16 shadow-2xl text-white">
         <div class="mb-10 border-b border-white/10 pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
                 <h3 class="text-2xl md:text-3xl font-black uppercase font-oswald tracking-tight">Profil Responden & Demografi</h3>
-                <p class="text-slate-400 text-sm md:text-base font-bold mt-2">Pecahan data berdasarkan pangkalan data aduan SPPB JPN Pahang.</p>
+                <p class="text-slate-400 text-sm md:text-base font-bold mt-2">Pecahan profil berdasarkan pangkalan data aduan JPN Pahang.</p>
             </div>
             <div class="bg-white/5 border border-white/10 px-6 py-4 rounded-3xl">
                 <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest block mb-1">Status Pangkalan Data</span>
@@ -230,7 +224,6 @@
                     <span id="demoTotal" class="text-5xl md:text-7xl font-black text-white leading-none">0</span>
                     <span class="text-sm md:text-lg font-bold text-slate-500 uppercase">Responden</span>
                 </div>
-                <p class="text-[10px] md:text-sm text-slate-400 font-medium italic mt-4 leading-relaxed">Mewakili suara guru dan pegawai daripada seluruh negeri Pahang.</p>
             </div>
 
             <div class="bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 executive-card flex flex-col">
@@ -240,9 +233,7 @@
                     </div>
                     <h4 class="text-xs font-black uppercase tracking-widest text-slate-400">Pecahan Peranan</h4>
                 </div>
-                <div id="roleStats" class="space-y-6 flex-1">
-                    <div class="animate-pulse py-4 text-slate-600 font-bold uppercase tracking-widest text-[10px] text-center italic">Memuatkan Peranan...</div>
-                </div>
+                <div id="roleStats" class="space-y-6 flex-1"></div>
             </div>
 
             <div class="bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 executive-card flex flex-col">
@@ -252,18 +243,17 @@
                     </div>
                     <h4 class="text-xs font-black uppercase tracking-widest text-slate-400">Kategori Institusi</h4>
                 </div>
-                <div id="schoolStats" class="space-y-6 flex-1">
-                    <div class="animate-pulse py-4 text-slate-600 font-bold uppercase tracking-widest text-[10px] text-center italic">Memuatkan Kategori...</div>
-                </div>
+                <div id="schoolStats" class="space-y-6 flex-1"></div>
             </div>
         </div>
       </section>
     </main>
   </div>
 
+  <!-- Toast & Popups -->
   <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-5 rounded-full shadow-2xl opacity-0 translate-y-20 pointer-events-none flex items-center gap-6 z-50 transition-all duration-500 border border-white/10">
     <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg></div>
-    <span class="text-xs font-black uppercase tracking-widest">Data Aduan Disalin</span>
+    <span class="text-xs font-black uppercase tracking-widest">Aduan Berjaya Disalin</span>
   </div>
 
   <script>
@@ -286,14 +276,13 @@
       sekolah: ['sekolah', 'nama sekolah'],
       jenis_sekolah: ['jenis sekolah', 'jenis', 'tahap sekolah'],
       isu: ['isu utama', 'perkara', 'masalah', 'problem'],
-      kesan: ['kesan', 'impak'],
-      cadangan: ['cadangan', 'saranan']
+      kesan: ['kesan', 'impak']
     };
 
     const $ = (id) => document.getElementById(id);
     const state = { rawData: [], filteredData: [], chart: null, activeCols: {}, timer: null, nextRefreshIn: 60, selectedLevel: "" };
 
-    // Register ChartDataLabels plugin
+    // Register Plugin Datalabels
     Chart.register(ChartDataLabels);
 
     function parseCSVRobust(text) {
@@ -356,9 +345,7 @@
       d.forEach(item => { if(stats[item.__theme.detectedLevel]) stats[item.__theme.detectedLevel].push(item); });
 
       levels.forEach(lvl => {
-        const countEl = $(`count${lvl}`);
-        if(countEl) countEl.textContent = stats[lvl].length;
-
+        if ($(`count${lvl}`)) $(`count${lvl}`).textContent = stats[lvl].length;
         const counts = {};
         stats[lvl].forEach(item => {
             if (item.__theme.theme !== "Tiada Masalah / OK") {
@@ -366,14 +353,12 @@
             }
         });
 
-        const limit = (lvl === 'Guru') ? 5 : 3;
-        const topUnique = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, limit);
-
         const listEl = $(`list${lvl}`);
         if(listEl) {
             listEl.innerHTML = "";
+            const topUnique = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, (lvl === 'Guru' ? 5 : 3));
             if(topUnique.length === 0) {
-                listEl.innerHTML = `<div class="p-12 text-center text-slate-200 font-black uppercase text-[10px] tracking-[0.2em] border-2 border-dashed border-slate-100 rounded-3xl">Tiada Isu Direkodkan</div>`;
+                listEl.innerHTML = `<div class="p-12 text-center text-slate-200 font-black uppercase text-[10px] tracking-[0.2em] border-2 border-dashed border-slate-100 rounded-3xl">Tiada Rekod</div>`;
             } else {
                 topUnique.forEach((themeName, idx) => {
                     const themeObj = THEME_RULES.find(t => t.theme === themeName) || { color: '#94a3b8', severity: 'Sederhana' };
@@ -382,15 +367,16 @@
                     const div = document.createElement('div');
                     div.className = `issue-item p-6 rounded-2xl bg-white border border-slate-100 animate-in`;
                     div.style.borderLeftColor = themeObj.color;
+                    // Mengeluarkan line-clamp-2 untuk memaparkan teks penuh
                     div.innerHTML = `
                         <div class="flex justify-between items-center mb-2">
                             <span class="severity-pill" style="color: ${themeObj.color}; background: ${themeObj.color}15">${themeObj.severity}</span>
-                            <span class="text-[9px] font-black text-slate-300 italic">#${idx+1}</span>
+                            <span class="text-[9px] font-black text-slate-300 italic">RANK #${idx+1}</span>
                         </div>
                         <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">${themeName}</p>
-                        <p class="text-sm font-black text-slate-800 leading-tight line-clamp-2">${stats[lvl].find(i => i.__theme.theme === themeName)[c.isu]}</p>
+                        <p class="text-sm font-black text-slate-800 leading-tight whitespace-normal break-words">${stats[lvl].find(i => i.__theme.theme === themeName)[c.isu]}</p>
                         <div class="mt-4 flex justify-between items-center text-[10px] font-bold">
-                            <span class="text-slate-400 uppercase">Impak: <span class="text-indigo-600 font-black">${pct}%</span></span>
+                            <span class="text-slate-400 uppercase">Kekerapan: <span class="text-indigo-600 font-black">${pct}%</span></span>
                             <span class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">${count} Aduan</span>
                         </div>
                     `;
@@ -400,16 +386,13 @@
         }
       });
 
-      // UPDATE CHART
+      // UPDATE CHART (JUMLAH & PERATUS)
       if (state.chart) state.chart.destroy();
       const globalCounts = {};
-      d.forEach(item => {
-          if (item.__theme.theme !== "Tiada Masalah / OK") {
-              globalCounts[item.__theme.theme] = (globalCounts[item.__theme.theme] || 0) + 1;
-          }
-      });
-      const totalFilteredAduan = Object.values(globalCounts).reduce((a, b) => a + b, 0);
+      d.forEach(item => { if (item.__theme.theme !== "Tiada Masalah / OK") globalCounts[item.__theme.theme] = (globalCounts[item.__theme.theme] || 0) + 1; });
+      const totalFiltered = Object.values(globalCounts).reduce((a, b) => a + b, 0);
       const labels = THEME_RULES.map(t => t.theme).filter(l => l !== "Tiada Masalah / OK");
+      
       const ctx = $("temaChart");
       if(ctx) {
         state.chart = new Chart(ctx, {
@@ -420,7 +403,7 @@
                     data: labels.map(l => globalCounts[l] || 0), 
                     backgroundColor: THEME_RULES.filter(t => t.theme !== "Tiada Masalah / OK").map(t => t.color), 
                     borderRadius: 12, 
-                    barThickness: 35 
+                    barThickness: 32 
                 }]
             },
             options: { 
@@ -435,18 +418,16 @@
                         offset: 10,
                         color: '#475569',
                         font: { weight: '800', size: 12 },
-                        formatter: (value) => {
-                            if (totalFilteredAduan === 0 || value === 0) return "";
-                            const percentage = ((value / totalFilteredAduan) * 100).toFixed(1) + '%';
-                            return `${value} (${percentage})`;
+                        formatter: (val) => {
+                            if (totalFiltered === 0 || val === 0) return "";
+                            const p = ((val / totalFiltered) * 100).toFixed(1);
+                            return `${val} (${p}%)`;
                         }
                     }
                 },
-                layout: {
-                    padding: { right: 80 } // Memberi ruang untuk teks datalabels
-                },
+                layout: { padding: { right: 90 } },
                 scales: { 
-                    x: { display: false, grid: { display: false } }, 
+                    x: { display: false }, 
                     y: { grid: { display: false }, ticks: { font: { weight: 'bold', size: 11 }, color: '#64748b' } } 
                 } 
             }
@@ -455,75 +436,45 @@
 
       if($("aiSummary")) {
           const topOverall = labels.sort((a,b) => (globalCounts[b]||0) - (globalCounts[a]||0))[0];
-          $("aiSummary").innerHTML = topOverall ? `Analisis menunjukkan isu kritikal utama di Pahang ketika ini adalah <b>${topOverall}</b>.` : "Tahap kestabilan sistem dikesan optimum setakat ini.";
+          $("aiSummary").innerHTML = topOverall ? `Parameter aduan paling tinggi di Pahang melibatkan <b>${topOverall}</b>.` : "Tahap kestabilan sistem optimum.";
       }
 
       if($("demoTotal")) $("demoTotal").textContent = r.length;
 
-      const roleCounts = {};
-      r.forEach(item => {
-          const role = (item[c.role] || "Pegawai").trim();
-          roleCounts[role] = (roleCounts[role] || 0) + 1;
-      });
-      if($("roleStats")) {
-          $("roleStats").innerHTML = Object.keys(roleCounts).sort((a,b) => roleCounts[b] - roleCounts[a]).map(role => {
-              const pct = Math.round((roleCounts[role] / r.length) * 100);
-              return `
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[10px] font-black uppercase text-slate-300">${role}</span>
-                        <span class="text-xs font-black text-white">${roleCounts[role]}</span>
-                    </div>
-                    <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                        <div class="h-full bg-indigo-500 rounded-full transition-all duration-1000" style="width: ${pct}%"></div>
-                    </div>
-                </div>
-              `;
-          }).join("");
-      }
+      // Update Role & School Stats
+      const updateDemStats = (containerId, key, color) => {
+          const counts = {};
+          r.forEach(item => { const v = (item[c[key]] || "Lain-lain").trim(); counts[v] = (counts[v] || 0) + 1; });
+          const el = $(containerId);
+          if (el) {
+              el.innerHTML = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).map(v => {
+                  const p = Math.round((counts[v] / r.length) * 100);
+                  return `<div><div class="flex justify-between items-center mb-1"><span class="text-[10px] font-black uppercase text-slate-400">${v}</span><span class="text-xs font-black text-white">${counts[v]}</span></div>
+                          <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all duration-1000" style="width: ${p}%; background: ${color}"></div></div></div>`;
+              }).join("");
+          }
+      };
+      updateDemStats("roleStats", "role", "#6366f1");
+      updateDemStats("schoolStats", "jenis_sekolah", "#a855f7");
 
-      const schoolCounts = {};
-      r.forEach(item => {
-          const sType = (item[c.jenis_sekolah] || "LAIN-LAIN").trim();
-          if(sType !== "N/A" && sType !== "") schoolCounts[sType] = (schoolCounts[sType] || 0) + 1;
-      });
-      if($("schoolStats")) {
-          $("schoolStats").innerHTML = Object.keys(schoolCounts).sort((a,b) => schoolCounts[b] - schoolCounts[a]).map(sType => {
-              const pct = Math.round((schoolCounts[sType] / r.length) * 100);
-              return `
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-[10px] font-black uppercase text-slate-300">${sType}</span>
-                        <span class="text-xs font-black text-white">${schoolCounts[sType]}</span>
-                    </div>
-                    <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                        <div class="h-full bg-purple-500 rounded-full transition-all duration-1000" style="width: ${pct}%"></div>
-                    </div>
-                </div>
-              `;
-          }).join("");
-      }
-
-      const tbody = $("tbody"); 
+      // Update Table
+      const tbody = $("tbody");
       if(tbody) {
           tbody.innerHTML = "";
-          if($("rowCount")) $("rowCount").textContent = `${d.length} Rekod Aktif`;
-          d.slice(0, 50).forEach(item => {
+          if($("rowCount")) $("rowCount").textContent = `${d.length} Rekod`;
+          d.slice(0, 40).forEach(item => {
               const tr = document.createElement("tr");
               tr.className = "hover:bg-indigo-50/50 transition-all border-b border-slate-50 group cursor-pointer";
-              tr.innerHTML = `
-                <td class="px-8 md:px-12 py-6"><span class="text-[10px] font-black uppercase px-3 py-1.5 rounded-lg bg-slate-900 text-white">${item.__theme.detectedLevel}</span></td>
-                <td class="px-6 md:px-8 py-6 font-black text-slate-800 tracking-tight text-base">${item[c.sekolah] || item[c.ppd] || "ARAS PUSAT"}</td>
-                <td class="px-6 md:px-8 py-6 text-[10px] font-black uppercase" style="color: ${item.__theme.color}">${item.__theme.theme}</td>
-                <td class="px-6 md:px-8 py-6 text-slate-500 font-medium italic leading-relaxed text-xs line-clamp-3">${item[c.isu]}</td>
-                <td class="px-8 md:px-12 py-6 text-right"><button class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-[10px] font-black opacity-0 group-hover:opacity-100 shadow-xl transition-all">SALIN</button></td>
-              `;
+              // Mengeluarkan line-clamp-3 untuk memaparkan teks penuh dalam jadual
+              tr.innerHTML = `<td class="px-8 md:px-12 py-6"><span class="text-[10px] font-black uppercase px-3 py-1.5 rounded-lg bg-slate-900 text-white">${item.__theme.detectedLevel}</span></td>
+                              <td class="px-6 md:px-8 py-6 font-black text-slate-800 text-base break-words">${item[c.sekolah] || item[c.ppd] || "ARAS PUSAT"}</td>
+                              <td class="px-6 md:px-8 py-6 text-[10px] font-black uppercase" style="color: ${item.__theme.color}">${item.__theme.theme}</td>
+                              <td class="px-6 md:px-8 py-6 text-slate-500 font-medium italic text-xs leading-relaxed break-words">${item[c.isu]}</td>
+                              <td class="px-8 md:px-12 py-6 text-right"><button class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-[10px] font-black opacity-0 group-hover:opacity-100 shadow-xl transition-all">SALIN</button></td>`;
               tr.onclick = () => {
                   const content = `[ADUAN SPPB] ${item.__theme.theme}\nARAS: ${item.__theme.detectedLevel}\nSEKOLAH: ${item[c.sekolah] || "N/A"}\nISU: ${item[c.isu]}`;
-                  const tempInput = document.createElement("textarea");
-                  tempInput.value = content; document.body.appendChild(tempInput); tempInput.select();
-                  document.execCommand("copy"); document.body.removeChild(tempInput);
-                  const toast = $("toast"); if(toast) { toast.classList.remove("opacity-0", "translate-y-20"); setTimeout(() => toast.classList.add("opacity-0", "translate-y-20"), 2000); }
+                  const t = document.createElement("textarea"); t.value = content; document.body.appendChild(t); t.select(); document.execCommand("copy"); document.body.removeChild(t);
+                  $("toast").classList.remove("opacity-0", "translate-y-20"); setTimeout(() => $("toast").classList.add("opacity-0", "translate-y-20"), 2000);
               };
               tbody.appendChild(tr);
           });
@@ -531,42 +482,32 @@
     }
 
     async function loadData() {
-      const url = DEFAULT_CSV_URL;
       const loader = $("loader");
       if(loader) loader.style.width = "40%";
-      if($("statusText")) $("statusText").textContent = "Mengambil data pangkalan Pahang...";
-      
+      if($("statusText")) $("statusText").textContent = "Mengambil data Pahang...";
       try {
-        const res = await fetch(url + "&t=" + Date.now());
-        if (!res.ok) throw new Error();
+        const res = await fetch(DEFAULT_CSV_URL + "&t=" + Date.now());
         const text = await res.text();
         const rows = parseCSVRobust(text);
         if (rows.length < 2) return;
-        
-        const headers = rows[0];
-        state.activeCols = resolveHeaders(headers);
-        state.rawData = rows.slice(1).map(values => {
-            const obj = {}; headers.forEach((h, i) => obj[h] = values[i] || ""); return obj;
-        });
-
+        state.activeCols = resolveHeaders(rows[0]);
+        state.rawData = rows.slice(1).map(v => { const o = {}; rows[0].forEach((h, i) => o[h] = v[i] || ""); return o; });
         if(loader) loader.style.width = "100%";
         if($("kpiTotal")) $("kpiTotal").textContent = state.rawData.length;
         if($("statusText")) $("statusText").textContent = `LIVE: ${state.rawData.length} RESPON AKTIF`;
         if($("statusDot")) $("statusDot").className = "w-3 h-3 rounded-full bg-green-500 shadow-[0_0_15px_#22c55e]";
-        
         applyFilters();
         state.nextRefreshIn = 60;
         setTimeout(() => { if(loader) loader.style.width = "0%"; }, 600);
       } catch (e) {
-        if($("statusText")) $("statusText").textContent = "RALAT: Hubungan CSV Terputus";
-        if($("statusDot")) $("statusDot").className = "w-3 h-3 rounded-full bg-red-500 shadow-lg";
+        if($("statusText")) $("statusText").textContent = "RALAT: Hubungan Terputus";
+        if($("statusDot")) $("statusDot").className = "w-3 h-3 rounded-full bg-red-500";
       }
     }
 
     function applyFilters() {
-      const qVal = $("q") ? $("q").value.trim().toLowerCase() : "";
+      const qVal = $("q").value.trim().toLowerCase();
       const c = state.activeCols;
-      
       state.filteredData = state.rawData.filter(item => {
         const matchLvl = !state.selectedLevel || pickTheme(item).detectedLevel === state.selectedLevel;
         const textSearch = `${item[c.isu]} ${item[c.sekolah]} ${item[c.ppd]}`.toLowerCase();
@@ -578,16 +519,14 @@
     setInterval(() => {
         state.nextRefreshIn--;
         if(state.nextRefreshIn <= 0) { loadData(); state.nextRefreshIn = 60; }
-        const tt = $("timerText");
-        if(tt) tt.textContent = `REFRESH DALAM ${state.nextRefreshIn}S`;
+        if($("timerText")) $("timerText").textContent = `KEMAS KINI DALAM ${state.nextRefreshIn}S`;
     }, 1000);
 
     window.onload = () => {
         loadData();
         if($("btnManualRefresh")) $("btnManualRefresh").onclick = loadData;
         if($("btnResetAll")) $("btnResetAll").onclick = () => { 
-            if($("q")) $("q").value = ""; 
-            state.selectedLevel = ""; 
+            $("q").value = ""; state.selectedLevel = ""; 
             document.querySelectorAll('.level-filter-btn').forEach(b => b.classList.remove('border-indigo-500', 'bg-indigo-50'));
             applyFilters(); 
         };
@@ -596,8 +535,7 @@
             btn.onclick = () => { 
                 document.querySelectorAll('.level-filter-btn').forEach(b => b.classList.remove('border-indigo-500', 'bg-indigo-50'));
                 btn.classList.add('border-indigo-500', 'bg-indigo-50');
-                state.selectedLevel = btn.dataset.level; 
-                applyFilters(); 
+                state.selectedLevel = btn.dataset.level; applyFilters(); 
             };
         });
     };
