@@ -6,8 +6,9 @@
   <title>JPN PAHANG | Matriks Isu SPPB MOEIS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Menambah pemalam datalabels untuk paparan jumlah & peratus pada graf -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
   <style>
-    /* Mengimport fon Oswald dan Plus Jakarta Sans */
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
@@ -19,44 +20,44 @@
     .issue-item { border-left: 4px solid transparent; transition: all 0.2s; }
     .issue-item:hover { background: #f8fafc; border-left-color: #6366f1; transform: translateX(4px); }
     .severity-pill { font-size: 11px; padding: 4px 12px; border-radius: 99px; font-weight: 800; text-transform: uppercase; }
-    
     .font-oswald { font-family: 'Oswald', sans-serif; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in { animation: fadeIn 0.5s ease forwards; }
   </style>
 </head>
 
 <body class="text-slate-900">
-  <!-- Indikator Loading -->
   <div id="loader" class="fixed top-0 left-0 h-1.5 bg-indigo-500 transition-all duration-700 z-50 w-0 shadow-[0_0_20px_rgba(99,102,241,0.8)]"></div>
 
   <div class="min-h-screen flex flex-col">
-    
-    <!-- Navigasi Eksekutif -->
-    <header class="glass-nav text-white sticky top-0 z-40 px-10 py-6 border-b border-white/10">
-      <div class="max-w-[1800px] mx-auto flex justify-between items-center">
-        <div class="flex items-center gap-8">
-          <!-- Logo JPN -->
-          <div class="w-20 h-20 flex items-center justify-center bg-white/5 rounded-2xl p-2">
+    <header class="glass-nav text-white sticky top-0 z-40 px-6 lg:px-10 py-6 border-b border-white/10">
+      <div class="max-w-[1800px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-6">
+          <div class="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center bg-white/5 rounded-2xl p-2 shrink-0">
             <img src="https://raw.githubusercontent.com/ictlshaks-wq/LOGODGURU/main/LOGO%20JPN%20PUTIH.png" alt="Logo JPN" class="max-w-full max-h-full object-contain" onerror="this.src='https://via.placeholder.com/80?text=JPN'">
           </div>
           <div>
-            <h1 class="text-3xl font-black tracking-tight uppercase leading-none text-white">JABATAN PENDIDIKAN NEGERI PAHANG</h1>
-            <p id="meta" class="text-xs font-bold text-indigo-400 uppercase tracking-[0.2em] mt-2 flex items-center gap-3">
+            <h1 class="text-xl md:text-3xl font-black tracking-tight uppercase leading-none text-white">JABATAN PENDIDIKAN NEGERI PAHANG</h1>
+            <p id="meta" class="text-[10px] md:text-xs font-bold text-indigo-400 uppercase tracking-[0.2em] mt-2 flex items-center gap-3">
                 <span id="statusDot" class="w-3 h-3 rounded-full bg-slate-500 shadow-lg"></span>
-                <span id="statusText" class="text-sm">Matriks Isu Pelaporan dan Perekodan Sistem SPPB MOEIS</span>
+                <span id="statusText">Matriks Isu Pelaporan dan Perekodan Sistem SPPB MOEIS</span>
             </p>
-            <!-- Nota Penghantaran/Pembangun (Ayat Kecil) -->
-            <p class="text-[9px] font-medium text-slate-500 uppercase tracking-[0.3em] mt-2 italic opacity-80">
+            <p class="text-[8px] md:text-[9px] font-medium text-slate-500 uppercase tracking-[0.3em] mt-2 italic opacity-80">
                 APLIKASI INI DIBANGUNKAN OLEH JK PBD NEGERI PAHANG 2026
             </p>
           </div>
         </div>
 
-        <div class="flex items-center gap-10">
+        <div class="flex items-center gap-6 md:gap-10">
           <div class="text-right hidden xl:block border-r border-white/10 pr-10">
             <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">Status Data</p>
             <p id="timerText" class="text-sm font-bold text-indigo-400 mt-2 uppercase tracking-tighter">Sedia</p>
           </div>
-          <button id="btnManualRefresh" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl text-sm font-black transition-all shadow-xl active:scale-95 flex items-center gap-3 uppercase tracking-widest border border-indigo-400/20">
+          <button id="btnManualRefresh" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl text-xs md:text-sm font-black transition-all shadow-xl active:scale-95 flex items-center gap-3 uppercase tracking-widest border border-indigo-400/20">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
             KEMAS KINI LIVE
           </button>
@@ -64,161 +65,140 @@
       </div>
     </header>
 
-    <main class="max-w-[1800px] mx-auto w-full p-12 space-y-16">
-
-      <!-- BAHAGIAN 1: MATRIKS ISU UTAMA -->
+    <main class="max-w-[1800px] mx-auto w-full p-6 md:p-12 space-y-12 md:space-y-16">
       <section>
-        <div class="flex items-end justify-between mb-12">
-            <div>
-                <h2 class="text-5xl font-black text-slate-900 tracking-tight uppercase font-oswald leading-tight">Tinjauan Isu Perekodan dan Pelaporan PBD dalam SPPB</h2>
-                <p class="text-slate-500 text-lg font-bold uppercase tracking-widest mt-4">Dapatan Utama Berdasarkan 540+ Respon Semasa</p>
+        <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-6">
+            <div class="max-w-4xl">
+                <h2 class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight uppercase font-oswald leading-tight">Tinjauan Isu Perekodan dan Pelaporan PBD dalam SPPB</h2>
+                <p class="text-slate-500 text-sm md:text-lg font-bold uppercase tracking-widest mt-4">Dapatan Utama Berdasarkan 540+ Respon Semasa</p>
             </div>
-            <div class="bg-white px-12 py-8 rounded-[3rem] border border-slate-200 shadow-sm text-center min-w-[280px]">
-                <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Total Aduan Diproses</p>
-                <h3 id="kpiTotal" class="text-6xl font-black text-indigo-600 mt-2 leading-none">0</h3>
+            <div class="bg-white px-8 md:px-12 py-6 md:py-8 rounded-[2rem] md:rounded-[3rem] border border-slate-200 shadow-sm text-center min-w-[200px] md:min-w-[280px]">
+                <p class="text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">Total Aduan Diproses</p>
+                <h3 id="kpiTotal" class="text-4xl md:text-6xl font-black text-indigo-600 mt-2 leading-none">0</h3>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
           <!-- ARAS: JPN -->
-          <div class="bg-white rounded-[4rem] p-14 shadow-sm executive-card flex flex-col border-t-[16px] border-amber-500">
-            <div class="flex items-center justify-between mb-14">
-              <span class="bg-amber-100 text-amber-700 px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest">Aras: JPN</span>
+          <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 shadow-sm executive-card flex flex-col border-t-[12px] md:border-t-[16px] border-amber-500">
+            <div class="flex items-center justify-between mb-10 md:mb-14">
+              <span class="bg-amber-100 text-amber-700 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest">Aras: JPN</span>
               <div class="text-amber-600 font-black text-right">
-                  <span id="countJPN" class="text-4xl leading-none">0</span>
-                  <span class="text-xs uppercase block opacity-60 text-slate-500 mt-1">Respon</span>
+                  <span id="countJPN" class="text-3xl md:text-4xl leading-none">0</span>
+                  <span class="text-[10px] uppercase block opacity-60 text-slate-500 mt-1">Respon</span>
               </div>
             </div>
-            
-            <h3 class="text-xs font-black text-slate-400 uppercase mb-10 tracking-[0.2em] border-b-2 pb-3 border-slate-50">3 Masalah Paling Kerap (JPN)</h3>
-            <div class="flex-1 space-y-8" id="listJPN">
-                <div class="py-12 text-center animate-pulse text-slate-200 font-bold uppercase tracking-widest text-sm">Menunggu Data...</div>
+            <h3 class="text-[10px] font-black text-slate-400 uppercase mb-8 tracking-[0.2em] border-b-2 pb-3 border-slate-50">3 Masalah Utama (JPN)</h3>
+            <div class="flex-1 space-y-6" id="listJPN">
+                <div class="py-12 text-center animate-pulse text-slate-200 font-bold uppercase tracking-widest text-xs">Menunggu Data...</div>
             </div>
-
-            <div class="mt-14 pt-10 border-t-2 border-slate-50">
-                <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-amber-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
-                    Saranan:
-                </p>
-                <p id="impactJPN" class="text-base font-bold text-slate-700 leading-relaxed italic">Bersihkan data asal sebelum dibekalkan ke negeri.</p>
+            <div class="mt-10 pt-8 border-t-2 border-slate-50">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-3">Saranan:</p>
+                <p id="impactJPN" class="text-sm md:text-base font-bold text-slate-700 leading-relaxed italic">Bersihkan data asal sebelum dibekalkan ke negeri.</p>
             </div>
           </div>
 
           <!-- ARAS: PPD -->
-          <div class="bg-white rounded-[4rem] p-14 shadow-sm executive-card flex flex-col border-t-[16px] border-purple-600">
-            <div class="flex items-center justify-between mb-14">
-              <span class="bg-purple-100 text-purple-700 px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest">Aras: PPD</span>
+          <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 shadow-sm executive-card flex flex-col border-t-[12px] md:border-t-[16px] border-purple-600">
+            <div class="flex items-center justify-between mb-10 md:mb-14">
+              <span class="bg-purple-100 text-purple-700 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest">Aras: PPD</span>
               <div class="text-purple-600 font-black text-right">
-                  <span id="countPPD" class="text-4xl leading-none">0</span>
-                  <span class="text-xs uppercase block opacity-60 text-slate-500 mt-1">Respon</span>
+                  <span id="countPPD" class="text-3xl md:text-4xl leading-none">0</span>
+                  <span class="text-[10px] uppercase block opacity-60 text-slate-500 mt-1">Respon</span>
               </div>
             </div>
-
-            <h3 class="text-xs font-black text-slate-400 uppercase mb-10 tracking-[0.2em] border-b-2 pb-3 border-slate-50">3 Masalah Paling Kerap (PPD)</h3>
-            <div class="flex-1 space-y-8" id="listPPD">
-                <div class="py-12 text-center animate-pulse text-slate-200 font-bold uppercase tracking-widest text-sm">Menunggu Data...</div>
+            <h3 class="text-[10px] font-black text-slate-400 uppercase mb-8 tracking-[0.2em] border-b-2 pb-3 border-slate-50">3 Masalah Utama (PPD)</h3>
+            <div class="flex-1 space-y-6" id="listPPD">
+                <div class="py-12 text-center animate-pulse text-slate-200 font-bold uppercase tracking-widest text-xs">Menunggu Data...</div>
             </div>
-
-            <div class="mt-14 pt-10 border-t-2 border-slate-50">
-                <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-purple-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
-                    Saranan:
-                </p>
-                <p id="impactPPD" class="text-base font-bold text-slate-700 leading-relaxed italic">Hentikan sementara pertukaran murid masa fasa mengisi markah.</p>
+            <div class="mt-10 pt-8 border-t-2 border-slate-50">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-3">Saranan:</p>
+                <p id="impactPPD" class="text-sm md:text-base font-bold text-slate-700 leading-relaxed italic">Hentikan sementara pertukaran murid masa fasa perekodan.</p>
             </div>
           </div>
 
           <!-- ARAS: SEKOLAH -->
-          <div class="bg-slate-900 rounded-[4rem] p-14 shadow-2xl shadow-slate-300 executive-card flex flex-col text-white border-t-[16px] border-indigo-500">
-            <div class="flex items-center justify-between mb-14">
-              <span class="bg-white/10 text-indigo-300 px-8 py-3 rounded-full text-sm font-black uppercase tracking-widest border border-white/5">Aras: SEKOLAH</span>
+          <div class="bg-slate-900 rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 shadow-2xl shadow-slate-300 executive-card flex flex-col text-white border-t-[12px] md:border-t-[16px] border-indigo-500">
+            <div class="flex items-center justify-between mb-10 md:mb-14">
+              <span class="bg-white/10 text-indigo-300 px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-white/5">Aras: SEKOLAH</span>
               <div class="text-white font-black text-right">
-                  <span id="countGuru" class="text-4xl leading-none">0</span>
-                  <span class="text-xs uppercase block text-slate-500 font-bold mt-1">Respon</span>
+                  <span id="countGuru" class="text-3xl md:text-4xl leading-none">0</span>
+                  <span class="text-[10px] uppercase block text-slate-500 font-bold mt-1">Respon</span>
               </div>
             </div>
-
-            <h3 class="text-xs font-black text-indigo-300 uppercase mb-10 tracking-[0.2em] border-b-2 border-white/5 pb-3">5 Masalah Paling Kerap (Sekolah)</h3>
-            <div class="flex-1 space-y-7 custom-scroll overflow-y-auto max-h-[600px] pr-6" id="listGuru">
-                <div class="py-12 text-center animate-pulse text-slate-600 font-bold uppercase tracking-widest text-sm">Menunggu Data...</div>
+            <h3 class="text-[10px] font-black text-indigo-300 uppercase mb-8 tracking-[0.2em] border-b-2 border-white/5 pb-3">5 Masalah Utama (Sekolah)</h3>
+            <div class="flex-1 space-y-6 custom-scroll overflow-y-auto max-h-[500px] pr-4" id="listGuru">
+                <div class="py-12 text-center animate-pulse text-slate-600 font-bold uppercase tracking-widest text-xs">Menunggu Data...</div>
             </div>
-
-            <div class="mt-14 pt-10 border-t-2 border-white/5">
-                <p class="text-xs font-black text-indigo-400 uppercase tracking-widest mb-4 flex items-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
-                    Saranan:
-                </p>
-                <p id="impactGuru" class="text-base font-bold text-slate-300 leading-relaxed italic text-white/90">Lajukan server supaya cikgu tak perlu berjaga malam.</p>
+            <div class="mt-10 pt-8 border-t-2 border-white/5">
+                <p class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-3">Saranan:</p>
+                <p id="impactGuru" class="text-sm md:text-base font-bold text-slate-300 leading-relaxed italic text-white/90">Tingkatkan kapasiti pelayan semasa waktu puncak.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- BAHAGIAN 2: DATA EXPLORER & DEMOGRAFI -->
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-14">
-        
-        <aside class="lg:col-span-1 space-y-10">
-          <div class="bg-white rounded-[3rem] p-12 border border-slate-200 shadow-sm">
-            <h4 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-10 flex items-center justify-between">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-10 md:gap-14">
+        <aside class="lg:col-span-1 space-y-8 md:space-y-10">
+          <div class="bg-white rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-12 border border-slate-200 shadow-sm">
+            <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-8 flex items-center justify-between">
                 Carian & Penapis
-                <button id="btnResetAll" class="text-indigo-600 font-bold text-xs uppercase hover:underline">Reset</button>
+                <button id="btnResetAll" class="text-indigo-600 font-bold text-[10px] uppercase hover:underline">Reset</button>
             </h4>
-            <div class="space-y-10">
+            <div class="space-y-8">
                 <div>
-                    <label class="text-xs font-black text-slate-400 uppercase mb-4 block tracking-widest">Pilih Aras</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase mb-4 block tracking-widest">Pilih Aras</label>
                     <div class="flex flex-col gap-3" id="levelFilterContainer">
-                        <button class="level-filter-btn text-left p-5 rounded-2xl bg-slate-50 text-sm font-bold text-slate-600 border-2 border-transparent hover:border-indigo-200 transition-all flex justify-between items-center shadow-sm" data-level="JPN">Negeri (JPN)</button>
-                        <button class="level-filter-btn text-left p-5 rounded-2xl bg-slate-50 text-sm font-bold text-slate-600 border-2 border-transparent hover:border-indigo-200 transition-all flex justify-between items-center shadow-sm" data-level="PPD">Daerah (PPD)</button>
-                        <button class="level-filter-btn text-left p-5 rounded-2xl bg-slate-50 text-sm font-bold text-slate-600 border-2 border-transparent hover:border-indigo-200 transition-all flex justify-between items-center shadow-sm" data-level="Guru">Sekolah (Guru)</button>
+                        <button class="level-filter-btn text-left p-4 rounded-xl bg-slate-50 text-xs font-bold text-slate-600 border-2 border-transparent hover:border-indigo-200 transition-all flex justify-between items-center shadow-sm" data-level="JPN">Negeri (JPN)</button>
+                        <button class="level-filter-btn text-left p-4 rounded-xl bg-slate-50 text-xs font-bold text-slate-600 border-2 border-transparent hover:border-indigo-200 transition-all flex justify-between items-center shadow-sm" data-level="PPD">Daerah (PPD)</button>
+                        <button class="level-filter-btn text-left p-4 rounded-xl bg-slate-50 text-xs font-bold text-slate-600 border-2 border-transparent hover:border-indigo-200 transition-all flex justify-between items-center shadow-sm" data-level="Guru">Sekolah (Guru)</button>
                     </div>
                 </div>
                 <div>
-                    <label class="text-xs font-black text-slate-400 uppercase mb-4 block tracking-widest">Cari Teks Isu</label>
-                    <input id="q" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-5 text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/10 focus:bg-white transition-all shadow-sm" placeholder="Contoh: server, ralat, markah..." />
+                    <label class="text-[10px] font-black text-slate-400 uppercase mb-4 block tracking-widest">Cari Teks Isu</label>
+                    <input id="q" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-6 py-4 text-xs font-bold outline-none focus:ring-4 focus:ring-indigo-500/10 focus:bg-white transition-all shadow-sm" placeholder="cth: server, ralat, markah..." />
                 </div>
             </div>
           </div>
 
-          <div class="bg-indigo-700 rounded-[3rem] p-12 text-white shadow-xl shadow-indigo-200 relative overflow-hidden">
-            <h4 class="text-indigo-200 text-xs font-black uppercase tracking-widest mb-6">Executive Insight</h4>
-            <div id="aiSummary" class="text-lg leading-relaxed font-bold italic z-10 relative">
+          <div class="bg-indigo-700 rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-12 text-white shadow-xl shadow-indigo-200 relative overflow-hidden">
+            <h4 class="text-indigo-200 text-[10px] font-black uppercase tracking-widest mb-6">Executive Insight</h4>
+            <div id="aiSummary" class="text-base md:text-lg leading-relaxed font-bold italic z-10 relative">
                 Sistem sedang memproses data...
             </div>
             <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white/5 rounded-full"></div>
           </div>
         </aside>
 
-        <div class="lg:col-span-3 space-y-12">
-            <div class="bg-white rounded-[4rem] p-14 border border-slate-200 shadow-sm relative overflow-hidden">
-                <div class="flex items-center justify-between mb-12">
-                    <h4 class="text-2xl font-black text-slate-800 tracking-tight">Pecahan Isu Mengikut Kekerapan</h4>
-                    <span class="text-xs font-black bg-slate-100 text-slate-400 px-6 py-2 rounded-full uppercase tracking-widest border border-slate-200">Statistik Isu</span>
+        <div class="lg:col-span-3 space-y-10 md:space-y-12">
+            <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-14 border border-slate-200 shadow-sm relative overflow-hidden">
+                <div class="flex items-center justify-between mb-10 md:mb-12">
+                    <h4 class="text-xl md:text-2xl font-black text-slate-800 tracking-tight">Pecahan Isu: Jumlah & Peratusan</h4>
+                    <span class="text-[10px] font-black bg-slate-100 text-slate-400 px-5 py-2 rounded-full uppercase tracking-widest border border-slate-200">Statistik Isu</span>
                 </div>
-                <div class="h-[450px] w-full">
+                <div class="h-[400px] md:h-[500px] w-full">
                     <canvas id="temaChart"></canvas>
                 </div>
             </div>
 
-            <!-- Jadual Log Aduan -->
-            <div class="bg-white rounded-[4rem] border border-slate-200 overflow-hidden shadow-sm">
-                <div class="px-12 py-10 border-b-2 border-slate-50 bg-slate-50/40 flex justify-between items-center">
-                    <h4 class="text-sm font-black text-slate-500 uppercase tracking-[0.2em]">Log Laporan Aduan Terkini</h4>
-                    <span id="rowCount" class="text-xs font-bold text-white bg-slate-900 px-6 py-2 rounded-full shadow-lg">0 Rekod Diproses</span>
+            <div class="bg-white rounded-[2.5rem] md:rounded-[4rem] border border-slate-200 overflow-hidden shadow-sm">
+                <div class="px-8 md:px-12 py-8 md:py-10 border-b-2 border-slate-50 bg-slate-50/40 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Log Laporan Aduan Terkini</h4>
+                    <span id="rowCount" class="text-[10px] font-bold text-white bg-slate-900 px-5 py-2 rounded-full shadow-lg">0 Rekod Diproses</span>
                 </div>
-                <div class="overflow-x-auto custom-scroll max-h-[700px]">
+                <div class="overflow-x-auto custom-scroll max-h-[600px] md:max-h-[700px]">
                     <table class="w-full text-left text-base">
                         <thead class="sticky top-0 bg-white shadow-sm z-10">
-                            <tr class="text-slate-400 text-xs font-black uppercase tracking-widest border-b border-slate-100">
-                                <th class="px-12 py-8">Aras</th>
-                                <th class="px-8 py-8">Institusi / Wilayah</th>
-                                <th class="px-8 py-8">Kategori Masalah</th>
-                                <th class="px-8 py-8 w-1/3">Butiran Aduan</th>
-                                <th class="px-12 py-8 text-right">Aksi</th>
+                            <tr class="text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-slate-100">
+                                <th class="px-8 md:px-12 py-6">Aras</th>
+                                <th class="px-6 md:px-8 py-6">Institusi / Wilayah</th>
+                                <th class="px-6 md:px-8 py-6">Kategori Isu</th>
+                                <th class="px-6 md:px-8 py-6 w-1/3">Butiran Aduan</th>
+                                <th class="px-8 md:px-12 py-6 text-right">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="tbody" class="divide-y divide-slate-50 text-slate-600 font-medium">
-                            <tr><td colspan="5" class="px-12 py-40 text-center text-slate-300 font-black uppercase text-sm tracking-[0.3em] animate-pulse font-bold italic">Sedang Menjalankan Analisis...</td></tr>
+                            <tr><td colspan="5" class="px-12 py-40 text-center text-slate-300 font-black uppercase text-xs tracking-[0.3em] animate-pulse italic">Menjalankan Analisis...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -226,70 +206,64 @@
         </div>
       </div>
 
-      <!-- BAHAGIAN 3: DATA BILANGAN RESPONDEN, JENIS SEKOLAH & PERANAN -->
-      <section class="bg-slate-900 rounded-[4rem] p-16 shadow-2xl text-white">
-        <div class="mb-12 border-b border-white/10 pb-8 flex items-center justify-between">
+      <section class="bg-slate-900 rounded-[2.5rem] md:rounded-[4rem] p-10 md:p-16 shadow-2xl text-white">
+        <div class="mb-10 border-b border-white/10 pb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
-                <h3 class="text-3xl font-black uppercase font-oswald tracking-tight">Profil Responden & Demografi</h3>
-                <p class="text-slate-400 text-base font-bold mt-2">Pecahan data berdasarkan 540+ aduan yang diterima melalui pangkalan data SPPB.</p>
+                <h3 class="text-2xl md:text-3xl font-black uppercase font-oswald tracking-tight">Profil Responden & Demografi</h3>
+                <p class="text-slate-400 text-sm md:text-base font-bold mt-2">Pecahan data berdasarkan pangkalan data aduan SPPB JPN Pahang.</p>
             </div>
-            <div class="bg-white/5 border border-white/10 px-8 py-4 rounded-3xl">
-                <span class="text-xs font-black text-indigo-400 uppercase tracking-widest block mb-1">Status Pangkalan Data</span>
-                <span class="text-lg font-black text-white italic">LIVE DATA SYNC</span>
+            <div class="bg-white/5 border border-white/10 px-6 py-4 rounded-3xl">
+                <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest block mb-1">Status Pangkalan Data</span>
+                <span class="text-base md:text-lg font-black text-white italic">LIVE DATA SYNC</span>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <!-- Bilangan Responden -->
-            <div class="bg-white/5 border border-white/10 rounded-[3rem] p-10 executive-card">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <div class="bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 executive-card">
                 <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-600 rounded-2xl flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                     </div>
-                    <h4 class="text-sm font-black uppercase tracking-widest text-slate-400">Jumlah Keseluruhan</h4>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-400">Jumlah Keseluruhan</h4>
                 </div>
                 <div class="flex items-baseline gap-2 mb-2">
-                    <span id="demoTotal" class="text-7xl font-black text-white leading-none">0</span>
-                    <span class="text-lg font-bold text-slate-500 uppercase">Responden</span>
+                    <span id="demoTotal" class="text-5xl md:text-7xl font-black text-white leading-none">0</span>
+                    <span class="text-sm md:text-lg font-bold text-slate-500 uppercase">Responden</span>
                 </div>
-                <p class="text-sm text-slate-400 font-medium italic mt-4 leading-relaxed">Mewakili suara guru dan pegawai daripada seluruh negeri Pahang.</p>
+                <p class="text-[10px] md:text-sm text-slate-400 font-medium italic mt-4 leading-relaxed">Mewakili suara guru dan pegawai daripada seluruh negeri Pahang.</p>
             </div>
 
-            <!-- Peranan -->
-            <div class="bg-white/5 border border-white/10 rounded-[3rem] p-10 executive-card flex flex-col">
+            <div class="bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 executive-card flex flex-col">
                 <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-amber-500 rounded-2xl flex items-center justify-center">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-500 rounded-2xl flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                     </div>
-                    <h4 class="text-sm font-black uppercase tracking-widest text-slate-400">Pecahan Peranan</h4>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-400">Pecahan Peranan</h4>
                 </div>
                 <div id="roleStats" class="space-y-6 flex-1">
-                    <div class="animate-pulse py-4 text-slate-600 font-bold uppercase tracking-widest text-xs text-center italic">Memuatkan Peranan...</div>
+                    <div class="animate-pulse py-4 text-slate-600 font-bold uppercase tracking-widest text-[10px] text-center italic">Memuatkan Peranan...</div>
                 </div>
             </div>
 
-            <!-- Jenis Sekolah -->
-            <div class="bg-white/5 border border-white/10 rounded-[3rem] p-10 executive-card flex flex-col">
+            <div class="bg-white/5 border border-white/10 rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 executive-card flex flex-col">
                 <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 bg-purple-600 rounded-2xl flex items-center justify-center">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-purple-600 rounded-2xl flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                     </div>
-                    <h4 class="text-sm font-black uppercase tracking-widest text-slate-400">Kategori Institusi</h4>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-400">Kategori Institusi</h4>
                 </div>
                 <div id="schoolStats" class="space-y-6 flex-1">
-                    <div class="animate-pulse py-4 text-slate-600 font-bold uppercase tracking-widest text-xs text-center italic">Memuatkan Kategori...</div>
+                    <div class="animate-pulse py-4 text-slate-600 font-bold uppercase tracking-widest text-[10px] text-center italic">Memuatkan Kategori...</div>
                 </div>
             </div>
         </div>
       </section>
-
     </main>
   </div>
 
-  <!-- Toast -->
-  <div id="toast" class="fixed bottom-14 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-12 py-7 rounded-full shadow-2xl opacity-0 translate-y-20 pointer-events-none flex items-center gap-6 z-50 transition-all duration-500 border border-white/10">
-    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg></div>
-    <span class="text-base font-black uppercase tracking-[0.2em]">Data Aduan Disalin</span>
+  <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-5 rounded-full shadow-2xl opacity-0 translate-y-20 pointer-events-none flex items-center gap-6 z-50 transition-all duration-500 border border-white/10">
+    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg></div>
+    <span class="text-xs font-black uppercase tracking-widest">Data Aduan Disalin</span>
   </div>
 
   <script>
@@ -299,7 +273,7 @@
       { level: 'JPN', theme: "Data Tak Tepat / Bertindih", re: /(mentah|duplicate|bertindih|bersihkan|tepat|duplikasi|tercicir)/i, color: '#f59e0b', bg: '#fffbeb', severity: 'Kritikal' },
       { level: 'PPD', theme: "Isu Murid / Guru Pindah", re: /(pertukaran|pindah|sekolah\s*lama|sekolah\s*baru|murid\s*pindah|guru\s*pindah|mobiliti)/i, color: '#a855f7', bg: '#faf5ff', severity: 'Sederhana' },
       { level: 'PPD', theme: "Masalah Login / Peranan", re: /(peranan|role|akses|sppb|pentadbir|manual|prosedur|akaun|IDM|idme|login|masuk)/i, color: '#7c3aed', bg: '#f5f3ff', severity: 'Rendah' },
-      { level: 'Guru', theme: "Sistem Lambat / Loading Lama", re: /(lambat|slow|hang|loading|timeout|down|lag|trafik|server|perlahan|pusing|pusing2|jem|pusing-pusing)/i, color: '#f43f5e', bg: '#fff1f2', severity: 'Kritikal' },
+      { level: 'Guru', theme: "Sistem Lambat / Hang", re: /(lambat|slow|hang|loading|timeout|down|lag|trafik|server|perlahan|pusing|pusing2|jem|pusing-pusing)/i, color: '#f43f5e', bg: '#fff1f2', severity: 'Kritikal' },
       { level: 'Guru', theme: "Data Hilang / Tak Simpan", re: /(hilang|ralat|error|tidak\s*simpan|save|kosong|terpadam|refresh|tidak\s*lekat|berulang)/i, color: '#6366f1', bg: '#eef2ff', severity: 'Kritikal' },
       { level: 'Guru', theme: "Kerja Berulang / Kerja Malam", re: /(beban|dua\s*kali|berulang|pengkeranian|singkat|malam|2\s*pagi|1\s*pagi|rehat|masa|terganggu|lewat\s*malam)/i, color: '#ec4899', bg: '#fdf2f8', severity: 'Kritikal' },
       { level: 'Umum', theme: "Tiada Masalah / OK", re: /(tiada\s*masalah|tiada\s*isu|mudah|lancar|tiada|ok|baik|sppb)/i, color: '#10b981', bg: '#f0fdf4', severity: 'Stabil' },
@@ -318,6 +292,9 @@
 
     const $ = (id) => document.getElementById(id);
     const state = { rawData: [], filteredData: [], chart: null, activeCols: {}, timer: null, nextRefreshIn: 60, selectedLevel: "" };
+
+    // Register ChartDataLabels plugin
+    Chart.register(ChartDataLabels);
 
     function parseCSVRobust(text) {
       const rows = [];
@@ -365,7 +342,7 @@
       if(role.includes('jpn') || role.includes('negeri')) level = 'JPN';
       else if(role.includes('ppd') || role.includes('daerah')) level = 'PPD';
       for (const rule of THEME_RULES) if (rule.re.test(combined)) return {...rule, detectedLevel: level};
-      return { theme: "Masalah Parameter Lain", color: '#94a3b8', level: 'Umum', detectedLevel: level, severity: 'Rendah' };
+      return { theme: "Isu Lain-lain", color: '#94a3b8', level: 'Umum', detectedLevel: level, severity: 'Sederhana' };
     }
 
     function updateStrategicUI() {
@@ -396,25 +373,25 @@
         if(listEl) {
             listEl.innerHTML = "";
             if(topUnique.length === 0) {
-                listEl.innerHTML = `<div class="p-20 text-center text-slate-200 font-black uppercase text-sm tracking-[0.2em] border-2 border-dashed border-slate-100 rounded-[3rem]">Tiada Isu Kritikal</div>`;
+                listEl.innerHTML = `<div class="p-12 text-center text-slate-200 font-black uppercase text-[10px] tracking-[0.2em] border-2 border-dashed border-slate-100 rounded-3xl">Tiada Isu Direkodkan</div>`;
             } else {
                 topUnique.forEach((themeName, idx) => {
-                    const themeObj = THEME_RULES.find(t => t.theme === themeName) || { color: '#94a3b8', severity: 'Rendah' };
+                    const themeObj = THEME_RULES.find(t => t.theme === themeName) || { color: '#94a3b8', severity: 'Sederhana' };
                     const count = counts[themeName];
                     const pct = stats[lvl].length > 0 ? Math.round((count / stats[lvl].length) * 100) : 0;
                     const div = document.createElement('div');
-                    div.className = `issue-item p-8 rounded-[2rem] bg-white border border-slate-100 animate-in`;
+                    div.className = `issue-item p-6 rounded-2xl bg-white border border-slate-100 animate-in`;
                     div.style.borderLeftColor = themeObj.color;
                     div.innerHTML = `
-                        <div class="flex justify-between items-center mb-3">
+                        <div class="flex justify-between items-center mb-2">
                             <span class="severity-pill" style="color: ${themeObj.color}; background: ${themeObj.color}15">${themeObj.severity}</span>
-                            <span class="text-sm font-black text-slate-300 italic">RANK #${idx+1}</span>
+                            <span class="text-[9px] font-black text-slate-300 italic">#${idx+1}</span>
                         </div>
-                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">${themeName}</p>
-                        <p class="text-lg font-black text-slate-800 leading-tight whitespace-normal break-words">${stats[lvl].find(i => i.__theme.theme === themeName)[c.isu]}</p>
-                        <div class="mt-5 flex justify-between items-center text-xs font-bold">
-                            <span class="text-slate-400 uppercase tracking-tighter">Kekerapan: <span class="text-indigo-600 font-black">${pct}%</span></span>
-                            <span class="text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg">${count} Kes</span>
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">${themeName}</p>
+                        <p class="text-sm font-black text-slate-800 leading-tight line-clamp-2">${stats[lvl].find(i => i.__theme.theme === themeName)[c.isu]}</p>
+                        <div class="mt-4 flex justify-between items-center text-[10px] font-bold">
+                            <span class="text-slate-400 uppercase">Impak: <span class="text-indigo-600 font-black">${pct}%</span></span>
+                            <span class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">${count} Aduan</span>
                         </div>
                     `;
                     listEl.appendChild(div);
@@ -423,7 +400,7 @@
         }
       });
 
-      // Update Charts & Visuals
+      // UPDATE CHART
       if (state.chart) state.chart.destroy();
       const globalCounts = {};
       d.forEach(item => {
@@ -431,91 +408,115 @@
               globalCounts[item.__theme.theme] = (globalCounts[item.__theme.theme] || 0) + 1;
           }
       });
+      const totalFilteredAduan = Object.values(globalCounts).reduce((a, b) => a + b, 0);
       const labels = THEME_RULES.map(t => t.theme).filter(l => l !== "Tiada Masalah / OK");
       const ctx = $("temaChart");
       if(ctx) {
         state.chart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: labels.map(l => l.split(' (')[0]),
-                datasets: [{ data: labels.map(l => globalCounts[l] || 0), backgroundColor: THEME_RULES.filter(t => t.theme !== "Tiada Masalah / OK").map(t => t.color), borderRadius: 15, barThickness: 40 }]
+                labels: labels,
+                datasets: [{ 
+                    data: labels.map(l => globalCounts[l] || 0), 
+                    backgroundColor: THEME_RULES.filter(t => t.theme !== "Tiada Masalah / OK").map(t => t.color), 
+                    borderRadius: 12, 
+                    barThickness: 35 
+                }]
             },
-            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
-                       scales: { x: { grid: { display: false }, ticks: { font: { weight: 'bold', size: 12 } } }, y: { grid: { display: false }, ticks: { font: { weight: 'bold', size: 13 } } } } }
+            options: { 
+                indexAxis: 'y', 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                plugins: { 
+                    legend: { display: false },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'right',
+                        offset: 10,
+                        color: '#475569',
+                        font: { weight: '800', size: 12 },
+                        formatter: (value) => {
+                            if (totalFilteredAduan === 0 || value === 0) return "";
+                            const percentage = ((value / totalFilteredAduan) * 100).toFixed(1) + '%';
+                            return `${value} (${percentage})`;
+                        }
+                    }
+                },
+                layout: {
+                    padding: { right: 80 } // Memberi ruang untuk teks datalabels
+                },
+                scales: { 
+                    x: { display: false, grid: { display: false } }, 
+                    y: { grid: { display: false }, ticks: { font: { weight: 'bold', size: 11 }, color: '#64748b' } } 
+                } 
+            }
         });
       }
 
       if($("aiSummary")) {
           const topOverall = labels.sort((a,b) => (globalCounts[b]||0) - (globalCounts[a]||0))[0];
-          $("aiSummary").innerHTML = topOverall ? `Parameter utama aduan tertumpu kepada <b>${topOverall}</b>.` : "Tahap kestabilan sistem dikesan optimum.";
+          $("aiSummary").innerHTML = topOverall ? `Analisis menunjukkan isu kritikal utama di Pahang ketika ini adalah <b>${topOverall}</b>.` : "Tahap kestabilan sistem dikesan optimum setakat ini.";
       }
 
-      // BAHAGIAN BAWAH: DEMOGRAFI & PROFIL
       if($("demoTotal")) $("demoTotal").textContent = r.length;
 
-      // Pecahan Peranan
       const roleCounts = {};
       r.forEach(item => {
-          const role = (item[c.role] || "Tiada Maklumat").trim();
+          const role = (item[c.role] || "Pegawai").trim();
           roleCounts[role] = (roleCounts[role] || 0) + 1;
       });
       if($("roleStats")) {
           $("roleStats").innerHTML = Object.keys(roleCounts).sort((a,b) => roleCounts[b] - roleCounts[a]).map(role => {
               const pct = Math.round((roleCounts[role] / r.length) * 100);
               return `
-                <div class="group">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-black uppercase text-slate-300 tracking-widest">${role}</span>
-                        <span class="text-sm font-black text-white">${roleCounts[role]}</span>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-black uppercase text-slate-300">${role}</span>
+                        <span class="text-xs font-black text-white">${roleCounts[role]}</span>
                     </div>
-                    <div class="h-3 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
                         <div class="h-full bg-indigo-500 rounded-full transition-all duration-1000" style="width: ${pct}%"></div>
                     </div>
-                    <div class="text-[10px] text-right text-slate-500 font-bold mt-1 uppercase tracking-tighter">${pct}% daripada jumlah responden</div>
                 </div>
               `;
           }).join("");
       }
 
-      // Pecahan Jenis Sekolah
       const schoolCounts = {};
       r.forEach(item => {
-          const sType = (item[c.jenis_sekolah] || "N/A").trim();
+          const sType = (item[c.jenis_sekolah] || "LAIN-LAIN").trim();
           if(sType !== "N/A" && sType !== "") schoolCounts[sType] = (schoolCounts[sType] || 0) + 1;
       });
       if($("schoolStats")) {
           $("schoolStats").innerHTML = Object.keys(schoolCounts).sort((a,b) => schoolCounts[b] - schoolCounts[a]).map(sType => {
               const pct = Math.round((schoolCounts[sType] / r.length) * 100);
               return `
-                <div class="group">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-black uppercase text-slate-300 tracking-widest">${sType}</span>
-                        <span class="text-sm font-black text-white">${schoolCounts[sType]}</span>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-black uppercase text-slate-300">${sType}</span>
+                        <span class="text-xs font-black text-white">${schoolCounts[sType]}</span>
                     </div>
-                    <div class="h-3 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
                         <div class="h-full bg-purple-500 rounded-full transition-all duration-1000" style="width: ${pct}%"></div>
                     </div>
-                    <div class="text-[10px] text-right text-slate-500 font-bold mt-1 uppercase tracking-tighter">${pct}% Kes Melibatkan ${sType}</div>
                 </div>
               `;
           }).join("");
-          if(Object.keys(schoolCounts).length === 0) $("schoolStats").innerHTML = `<div class="p-8 text-center text-slate-600 font-bold uppercase tracking-widest text-[10px] border-2 border-dashed border-white/5 rounded-3xl">Tiada Data Jenis Sekolah</div>`;
       }
 
-      // Jadual Log
       const tbody = $("tbody"); 
       if(tbody) {
           tbody.innerHTML = "";
-          if($("rowCount")) $("rowCount").textContent = `${d.length} Rekod Aktif Diproses`;
-          d.slice(0, 80).forEach(item => {
+          if($("rowCount")) $("rowCount").textContent = `${d.length} Rekod Aktif`;
+          d.slice(0, 50).forEach(item => {
               const tr = document.createElement("tr");
-              tr.className = "hover:bg-indigo-50/50 transition-all border-b border-slate-50 group";
+              tr.className = "hover:bg-indigo-50/50 transition-all border-b border-slate-50 group cursor-pointer";
               tr.innerHTML = `
-                <td class="px-12 py-8"><span class="text-xs font-black uppercase px-4 py-2 rounded-xl bg-slate-900 text-white">${item.__theme.detectedLevel}</span></td>
-                <td class="px-8 py-8 font-black text-slate-800 tracking-tight text-lg">${item[c.sekolah] || item[c.ppd] || "ARAS PUSAT"}</td>
-                <td class="px-8 py-8 text-xs font-black uppercase tracking-tighter" style="color: ${item.__theme.color}">${item.__theme.theme}</td>
-                <td class="px-8 py-8 text-slate-500 font-medium whitespace-normal italic leading-relaxed text-sm break-words">${item[c.isu]}</td>
-                <td class="px-12 py-8 text-right"><button class="bg-indigo-600 text-white px-6 py-3 rounded-2xl text-xs font-black opacity-0 group-hover:opacity-100 shadow-xl transition-all">SALIN</button></td>
+                <td class="px-8 md:px-12 py-6"><span class="text-[10px] font-black uppercase px-3 py-1.5 rounded-lg bg-slate-900 text-white">${item.__theme.detectedLevel}</span></td>
+                <td class="px-6 md:px-8 py-6 font-black text-slate-800 tracking-tight text-base">${item[c.sekolah] || item[c.ppd] || "ARAS PUSAT"}</td>
+                <td class="px-6 md:px-8 py-6 text-[10px] font-black uppercase" style="color: ${item.__theme.color}">${item.__theme.theme}</td>
+                <td class="px-6 md:px-8 py-6 text-slate-500 font-medium italic leading-relaxed text-xs line-clamp-3">${item[c.isu]}</td>
+                <td class="px-8 md:px-12 py-6 text-right"><button class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-[10px] font-black opacity-0 group-hover:opacity-100 shadow-xl transition-all">SALIN</button></td>
               `;
               tr.onclick = () => {
                   const content = `[ADUAN SPPB] ${item.__theme.theme}\nARAS: ${item.__theme.detectedLevel}\nSEKOLAH: ${item[c.sekolah] || "N/A"}\nISU: ${item[c.isu]}`;
@@ -551,36 +552,25 @@
         if(loader) loader.style.width = "100%";
         if($("kpiTotal")) $("kpiTotal").textContent = state.rawData.length;
         if($("statusText")) $("statusText").textContent = `LIVE: ${state.rawData.length} RESPON AKTIF`;
-        if($("statusDot")) $("statusDot").className = "w-4 h-4 rounded-full bg-green-500 shadow-[0_0_15px_#22c55e]";
+        if($("statusDot")) $("statusDot").className = "w-3 h-3 rounded-full bg-green-500 shadow-[0_0_15px_#22c55e]";
         
-        const ppdEl = $("fPPD"); 
-        if(ppdEl) {
-            ppdEl.options.length = 1;
-            const ppds = [...new Set(state.rawData.map(item => item[state.activeCols.ppd] || ""))].filter(v => v && v !== 'N/A').sort();
-            ppds.forEach(v => ppdEl.add(new Option(v, v)));
-        }
-
         applyFilters();
         state.nextRefreshIn = 60;
         setTimeout(() => { if(loader) loader.style.width = "0%"; }, 600);
       } catch (e) {
         if($("statusText")) $("statusText").textContent = "RALAT: Hubungan CSV Terputus";
-        if($("statusDot")) $("statusDot").className = "w-4 h-4 rounded-full bg-red-500 shadow-lg";
+        if($("statusDot")) $("statusDot").className = "w-3 h-3 rounded-full bg-red-500 shadow-lg";
       }
     }
 
     function applyFilters() {
-      const fp = $("fPPD");
-      const fPPD = fp ? fp.value : "";
-      const qi = $("q");
-      const qVal = qi ? qi.value.trim().toLowerCase() : "";
+      const qVal = $("q") ? $("q").value.trim().toLowerCase() : "";
       const c = state.activeCols;
       
       state.filteredData = state.rawData.filter(item => {
-        const matchPPD = !fPPD || (item[c.ppd] || "") === fPPD;
         const matchLvl = !state.selectedLevel || pickTheme(item).detectedLevel === state.selectedLevel;
-        const textSearch = `${item[c.isu]} ${item[c.sekolah]}`.toLowerCase();
-        return matchPPD && matchLvl && textSearch.includes(qVal);
+        const textSearch = `${item[c.isu]} ${item[c.sekolah]} ${item[c.ppd]}`.toLowerCase();
+        return matchLvl && textSearch.includes(qVal);
       }).map(item => ({ ...item, __theme: pickTheme(item) }));
       updateStrategicUI();
     }
@@ -594,12 +584,21 @@
 
     window.onload = () => {
         loadData();
-        const btnM = $("btnManualRefresh"); if(btnM) btnM.onclick = loadData;
-        const btnR = $("btnResetAll"); if(btnR) btnR.onclick = () => { if($("fPPD")) $("fPPD").value = ""; if($("q")) $("q").value = ""; state.selectedLevel = ""; applyFilters(); };
-        const fP = $("fPPD"); if(fP) fP.onchange = applyFilters;
-        const qE = $("q"); if(qE) qE.oninput = applyFilters;
+        if($("btnManualRefresh")) $("btnManualRefresh").onclick = loadData;
+        if($("btnResetAll")) $("btnResetAll").onclick = () => { 
+            if($("q")) $("q").value = ""; 
+            state.selectedLevel = ""; 
+            document.querySelectorAll('.level-filter-btn').forEach(b => b.classList.remove('border-indigo-500', 'bg-indigo-50'));
+            applyFilters(); 
+        };
+        if($("q")) $("q").oninput = applyFilters;
         document.querySelectorAll('.level-filter-btn').forEach(btn => {
-            btn.onclick = () => { state.selectedLevel = btn.dataset.level; applyFilters(); };
+            btn.onclick = () => { 
+                document.querySelectorAll('.level-filter-btn').forEach(b => b.classList.remove('border-indigo-500', 'bg-indigo-50'));
+                btn.classList.add('border-indigo-500', 'bg-indigo-50');
+                state.selectedLevel = btn.dataset.level; 
+                applyFilters(); 
+            };
         });
     };
   </script>
